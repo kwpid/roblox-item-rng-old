@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/2024_04_29_0ko_Kleki.png?v=1714407873770">
+<title>ROBLOX ITEM RNG (V0.5.2</title>
+<style>
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+   body {
+    background-color: #1a1a1a; /* Dark background */
+    color: #fff; /* Light text */
+    font-family: Roboto, sans-serif; /* Clean font */
+}
+
+  #container {
+    text-align: center;
+  }
+
+  #inventory {
+    margin-top: 20px;
+    border: 3px solid; /* Bigger border */
+    border-image: linear-gradient(to bottom, darkgreen, green, darkgreen, green); /* Dark green to green gradient border */
+    border-radius: 15px;
+    border-image-slice: 1; /* Ensure gradient covers entire border */
+    padding: 10px;
+    border-radius: 9px;
+  }
+
+.item-box {
+    display: inline-block;
+    background-color: #2e2e2e; /* Darker box background */
+    border: 3px solid green; /* Bigger border */
+    border-image-slice: 1; /* Ensure gradient covers entire border */
+    padding: 13px;
+    margin: 5px;
+    height: 75px;
+    max-width: 358px; /* Confine width */
+    max-height: 100px; /* Confine height */
+    border-radius: 8px;
+    width: 100%; /* Take full width */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Added box-shadow transition */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0); /* Initially no shadow */
+    background-size: contain; /* Maintain aspect ratio for background image */
+}
+
+
+.item-box:hover {
+    cursor: pointer;
+    background-color: grey;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* White box shadow with some opacity */
+}
+
+  .item-details {
+    text-align: left;
+    color: black;
+  -webkit-text-stroke: .64px black;
+  }
+
+  .item-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+  }
+
+  .item-rarity {
+    font-size: 17px;
+    font-weight: bold;
+    color: lightblue;
+  }
+
+  .item-value {
+    font-size: 17px;
+    font-weight: bold;
+    color: lightgreen; /* Set the color to green */
+}
+
+
+.item-box.Doombringer {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/2024_02_13_0h5_Kleki%20(1).png?v=1707837466265');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - 20px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+
+
+
+  .item-box.Buildercrown {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/2024_02_13_0jb_Kleki.png?v=1707842156107');
+   background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -10px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  .item-box.LightedSword {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/2024_02_13_0iy_Kleki%20(1).png?v=1707841341585');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -10px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+.item-box.Chessboard {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/2024_02_13_0l0_Kleki.png?v=1707845844590');
+   background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -10px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  .item-box.BunnyLauncher {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/FZsDUYasS9UEf1NKuXaP3mHwWEoIfrKV.png?v=1713199877957');
+   background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(110% - 2px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  .item-box.BlackSparkleTimeFedora {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/2024_02_13_0l2_Kleki.png?v=1707845901784');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+.item-box.RubuinusCrownofAureum {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/2024_02_13_0jo_Kleki.png?v=1707842906343');
+ background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -15px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+.item-box.DominusFrigidus {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/media.png?v=1707836506122');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -15px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}  
+.item-box.RedCommando {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/2024_02_13_0h8_Kleki.png?v=1707837641013');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -15px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}  
+.item-box.DominusEmp {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/Png%20(1).png?v=1707834264485');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -15px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  .item-box.DominoCrown {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/2024_02_13_0gs_Kleki.png?v=1707836665747');
+  background-size: 60%; /* Makes the background image smaller */
+  background-position: calc(100% - -15px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+} 
+  .item-box.thehat {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/image-removebg-preview%20(6).png?v=1713199393011');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+    background-color: purple;
+}
+  
+.item-box.MidnightFedora {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/2024_02_13_0kd_Kleki.png?v=1707844443340');
+ background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+.item-box.GreenSparkleFedora {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/2024_02_13_0js_Kleki.png?v=1707844359076');
+ background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+} 
+  .item-box.SkyBlueFedora {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/2024_02_13_0mc_Kleki.png?v=1707848699666');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+} 
+  .item-box.PinkSparkleFedora {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/2024_02_13_0mc_Kleki%20(2).png?v=1707848704436');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+} 
+.item-box.Admin {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/2024_04_15_0l3_Kleki.png?v=1713201256229');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: gray;
+} 
+.item-box.RainbowHair {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/2024_02_13_0jq_Kleki.png?v=1707843102706');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -30px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  .item-box.BrownHair {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/image-removebg-preview%20(20).png?v=1714149115375');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  .item-box.BlueHair {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/image-removebg-preview%20(19).png?v=1714149110228');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -15px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  .item-box.PurpuraCrownofAureum {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/2024_02_13_0jp_Kleki.png?v=1707843099716');
+ background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+} 
+  .item-box.AdamasCrownofAureum {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/2024_02_13_0hb_Kleki.png?v=1707837807204');
+ background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+} 
+.item-box.DeadlyDarkBatHood {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/2024_02_13_0gs_Kleki%20(2).png?v=1707836678816');
+ background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+  background-color: darkred;
+  border: 1px solid red;
+  box-shadow: 0 0 7px 4px darkred;
+}
+  .item-box.TieOfCoolness {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/vnCqjW9d-GeE7Og1JMCEP7wxFAOoR7qL.png?v=1713965244283');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - 5px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+} 
+  .item-box.GoldChainofBxx {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/_nHxwsS02XxBw-UoK1ZZqwnhiFWBD_ZU.png?v=1713965397361');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+} 
+  .item-box.BlackIronHorns {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/image-removebg-preview%20(15).png?v=1714149087913');
+ background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+} 
+  .item-box.Valkyrie {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/image-removebg-preview%20(17).png?v=1714149105886');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+} 
+  .item-box.IceValkyrie {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/image-removebg-preview%20(18).png?v=1714149099134');
+ background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+} 
+  .item-box.VioletValkyrie {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/image-removebg-preview%20(16).png?v=1714149092694');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+} 
+  .item-box.ClockworkShades {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/cws.png?v=1707833841931');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+} 
+  .item-box.BlackCrownOfPwning {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/2024_02_13_0h4_Kleki.png?v=1707837455153');
+ background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+} 
+  .item-box.WanwoodCrown {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/2024_02_13_0h4_Kleki%20(1).png?v=1707837458937');
+ background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+  background-color: #005b22;
+    border: 1px solid green;
+} 
+  .item-box.PurpleStarFederation {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/2024_02_13_0iy_Kleki.png?v=1707841336632');
+ background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+} 
+  .item-box.DominusAstra {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/2024_02_13_0gr_Kleki.png?v=1707836633923');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+} 
+  .item-box.DominusInfernus {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/dominf.png?v=1707834339787');
+ background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+} 
+  .item-box.RedFedora {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/2024_02_13_0h5_Kleki%20(2).png?v=1707837469113');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+} 
+  .item-box.OrangeFedora {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/image-removebg-preview%20(9).png?v=1714145750103');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+} 
+  .item-box.BlueFieryHorns {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/06ff8a48-8217-4162-a3e3-dbe9b50ad986.image.png?v=1714327999991');
+ background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+} 
+  .item-box.FieryHorns {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/7c45fa30-9e9f-4e71-bb1c-d08501f5f478.image.png?v=1714327995644');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+} 
+  .item-box.PoisonedFieryHorns {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/image-removebg-preview%20(12).png?v=1714145760929');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+} 
+  .item-box.DarkFieryHornsofSolius {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/image-removebg-preview%20(14).png?v=1714146157478');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+    background-color: #1f1f1f;
+  box-shadow: 0 0 50px 30px black; /* Adding a gold aura when hovered over */
+} 
+  .item-box.HeadlessHorseman {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/image-removebg-preview%20(7).png?v=1714145740957');
+ background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+    background-color: black;
+}
+.item-box.HorsemansPumpkin {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/image-removebg-preview%20(8).png?v=1714145744595');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+  background-color: black;
+}
+  .item-box.LegitmentFedora {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/efb5d1f3-ec7d-4739-9b54-9d41833ba9e8.image.png?v=1714283612057');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  .item-box.PartyUnicorn {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/2f1260ad-0f8d-42de-bede-541b7ec55b08.image.png?v=1714283582765');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  .item-box.MidnightHair {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/64404949-849f-4731-8073-61a1285e5013.image.png?v=1714283616123');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  .item-box.BlizzardBeastMode {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/ae75cb2e-9cfb-4f39-a3c0-4020683dc2a9.image.png?v=1714283628552');
+  background-size: 38%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  .item-box.ImmortalSwordofSpiders {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/eb37a04d-cd09-4b97-963f-e884c0ad00d8.image.png?v=1714283596408');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+   .item-box.RedDominoCrown {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/a61a4131-5d68-4e9f-8994-12c19461aeeb.image.png?v=1714283540876');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+ .item-box.DominusVesp {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/1a400df7-aa58-43ba-8c76-6e8891376cc3.image.png?v=1714283553325');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+   .item-box.DominusPraefectus {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/8719bf82-6fef-40df-98c2-57e2c349f7d8.image.png?v=1714283565140');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+   .item-box.DominusAureus {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/bb1804b5-692e-4900-94a6-97876375a251.image.png?v=1714283445031');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  .item-box.Shaggy {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/475febb9-1829-4d6d-8db1-44a76586ba80.image.png?v=1714328044903');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  .item-box.BlackGuitar {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/4dedaf81-247b-4853-b081-b23212f54ada.image.png?v=1714328050086');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  .item-box.SilverthornAntlers {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/0aa6551f-208e-4b90-a7d1-776b994742e0.image.png?v=1714328171189');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+   .item-box.ClockworkHeadphones {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/8453f66a-c8a0-4646-bd94-632401f03620.image.png?v=1714328186823');
+  background-size: 35%; /* Makes the background image smaller */
+  background-position: calc(100% - -5px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  .item-box.DominusRex {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/7f48d69d-b434-4145-b4ad-cf06e0b4fe93.image.png?v=1714328213672');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  .item-box.Voidstar {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/84bc3b2e-79c6-400e-a4d2-0b3092657ad4.image.png?v=1714328575040');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  .item-box.BluesteelDominoCrown {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/4ab7e46b-c43d-4199-8fbe-c699dcaa2fb9.image.png?v=1714328616570');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  .item-box.WorkclockShades {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/dc0e80b9-8135-49df-8470-5f9319677c31.image.png?v=1714328983675');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  .item-box.WorkclockHeadphones {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/e13afc7d-5eb7-4f1a-982a-43606befb9dd.image.png?v=1714328988542');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  .item-box.RedVoidstar {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/0bc1f2ab-1ef1-4a17-8253-a65faed8c47f.image.png?v=1714328929363');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  .item-box.BlueClockworkHeadphones {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/5849804d-7dcb-4f78-a7b5-ed2dbeb3e5fb.image.png?v=1714328937411');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  .item-box.SoivetUnionHat {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/090bf2ec-0b76-44d8-a860-dc6cc5dd3bf1.image.png?v=1714283606341');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  .item-box.PaperDominoCrown {
+  background-image: url('https://cdn.glitch.global/6c689e65-1fb9-42a9-823b-8f8f68fa364f/bb080ed8-b90e-4110-a139-7439c837fafe.image.png?v=1714328596085');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  .item-box.DominusRegium {
+  background-image: url('https://cdn.glitch.global/29486354-5d2c-4132-91e4-345e4c58d509/image-removebg-preview%20(21).png?v=1714410155451');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+    background-color: #4b598a;
+}
+   .item-box.DominusClaves {
+  background-image: url('https://cdn.glitch.global/29486354-5d2c-4132-91e4-345e4c58d509/image-removebg-preview%20(31).png?v=1714651841379');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+    background-color: gold;
+}
+  .item-box.AneglusDominus {
+  background-image: url('https://cdn.glitch.global/29486354-5d2c-4132-91e4-345e4c58d509/image-removebg-preview%20(30).png?v=1714651835691');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+    background-color: white;
+}
+   .item-box.EvilCrimsonwarthFace {
+  background-image: url('https://cdn.glitch.global/29486354-5d2c-4132-91e4-345e4c58d509/image-removebg-preview%20(23).png?v=1714652803997');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  .item-box.ImmortalSkullBlade {
+  background-image: url('https://cdn.glitch.global/29486354-5d2c-4132-91e4-345e4c58d509/image-removebg-preview%20(24).png?v=1714652811494');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  .item-box.ImmortalBlade {
+  background-image: url('https://cdn.glitch.global/29486354-5d2c-4132-91e4-345e4c58d509/image-removebg-preview%20(26).png?v=1714652820019');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  .item-box.ImmortalFrostbiteBlade {
+  background-image: url('https://cdn.glitch.global/29486354-5d2c-4132-91e4-345e4c58d509/image-removebg-preview%20(25).png?v=1714652815749');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+   .item-box.GoldenClockworkHeadphones {
+  background-image: url('https://cdn.glitch.global/29486354-5d2c-4132-91e4-345e4c58d509/image-removebg-preview%20(22).png?v=1714651748481');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+    background-color: gold;
+}
+   .item-box.RNGAwardofNo-Life {
+  background-image: url('https://cdn.glitch.global/29486354-5d2c-4132-91e4-345e4c58d509/image-removebg-preview%20(38).png?v=1715179137136');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+    background-color: gold;
+}
+  .item-box.RainbowFedora {
+  background-image: url('https://cdn.glitch.global/29486354-5d2c-4132-91e4-345e4c58d509/image-removebg-preview%20(35).png?v=1715179883498');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;\
+}
+   .item-box.PurpleHornedPumpkin {
+  background-image: url('https://cdn.glitch.global/29486354-5d2c-4132-91e4-345e4c58d509/image-removebg-preview%20(39).png?v=1715179891397');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+    background-color: purple;
+}
+  .item-box.BlackValk {
+  background-image: url('https://cdn.glitch.global/29486354-5d2c-4132-91e4-345e4c58d509/image-removebg-preview%20(37).png?v=1715179085085');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  .item-box.SuperSuperHappyFace {
+  background-image: url('https://cdn.glitch.global/29486354-5d2c-4132-91e4-345e4c58d509/image-removebg-preview%20(32).png?v=1714652831898');
+  background-size: 50%; /* Makes the background image smaller */
+  background-position: calc(100% - -25px) center; /* Pushes the background image 20px to the right */
+  background-repeat: no-repeat;
+}
+  
+  
+  .item-box.WanwoodCrown {
+  background-color: #005b22;
+    border: 1px solid green;
+    box-shadow: 0 0 7px 4px green;
+} 
+  .item-box.BugFinder {
+  background-color: #005b22;
+    border: 1px solid green;
+    box-shadow: 10px 10px 10px green;
+} 
+  .item-box.Developer { /* Adjust the height as needed */
+  border-radius: 10px; /* Adjust the border radius as needed */
+  animation: slideGradient 5s linear infinite; /* Adjust animation duration as needed */
+}
+
+@keyframes slideGradient {
+  0% {
+    background-position: 100% 0%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+/* For browsers that support CSS gradients */
+.item-box.Developer {
+  background: linear-gradient(to left, red, orange, yellow, green, blue, indigo, violet);
+  background-size: 1400% 100%; /* Adjust the background size according to the number of colors */
+}
+ 
+  #totalInventoryValue {
+    margin-top: 20px;
+    font-size: 16px;
+    color: lightgreen;
+  }
+  #totalValue {
+    color: lightgreen;
+  }
+  #itemDisplay {
+  background: linear-gradient(to bottom, darkgreen, green, darkgreen, darkgreen);
+    color: white;
+    font-size: 25px;
+  }
+  #totalRolls {
+    color: gold;
+  }
+  #limitedstitle {
+    color: white;
+    font-weight: bold;
+    background-color: black;
+    font-size: 30px;
+  }
+  #droptype {
+    color: grey;
+    font-size: 15px;
+    font-weight: bold;
+  
+  }
+  #title {
+    color: grey;
+    font-size: 15px;
+    font-weight: bold;
+  }
+  @keyframes textAnimation {
+  0%, 100% { content: "| LIMITEDS |"; }
+  25% { content: "/ LIMITEDS /"; }
+  50% { content: "— LIMITEDS —"; }
+  75% { content: "\\ LIMITEDS \\"; }
+}
+
+.inventory-title::before {
+  content: "| LIMITEDS |";
+  animation: textAnimation .8s infinite;
+  display: block;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  background: linear-gradient(to bottom, darkgreen, green, darkgreen, darkgreen);
+}
+  #exportButton, #importButton, #admin {
+    border: 1px solid white;
+    background-color: transparent;
+    padding: 20px 20px;
+    color: white;
+    cursor: pointer;
+    display: none;
+  }
+  button {
+    border: 1px solid white;
+    background-color: transparent;
+    padding: 20px 20px;
+    color: white;
+    cursor: pointer;
+
+  }
+  .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        /* Password input styles */
+        .password-input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 20px 0;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+  .popup {
+    position: fixed;
+    top: 50%; /* Adjust this value as needed */
+    left: 50%; /* Adjust this value as needed */
+    transform: translate(-50%, -50%);
+    background-color: #1a1a1a;
+    padding: 10px; /* Adjust padding as needed */
+    border: 1px solid black;
+    z-index: 1000;
+    display: none;
+    color: white;
+    width: 300px; /* Adjust width as needed */
+    max-height: 70%; /* Adjust max-height as needed */
+    overflow: auto; /* Add overflow auto for scrolling if content exceeds max height */
+}
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; /* Adjust height to cover the entire viewport */
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+}
+
+  #rollButton {
+    text-align: center;
+    border: 1px solid;
+     border-image: linear-gradient(to bottom, darkgreen, green, darkgreen, green);
+  border-radius: 15px;
+ border-image-slice: 1;
+    background-color: transparent;
+    color: green;
+    padding: 12px;
+  }
+  #limtedsi {
+    box-shadow: 0 0 10px 5px gold; 
+  }
+  #limteds2 {
+    box-shadow: 0 0 10px 5px purple;
+  }
+  /* CSS styles for the recent best rolls container */
+#recentBestRolls {
+  margin-top: 20px; /* Add some space above the container */
+   background: linear-gradient(to bottom, darkgreen, white, darkgreen, darkgreen);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+#recentRollsContainer {
+  border: 3px solid;
+  border-image: linear-gradient(to bottom, darkgreen, green, darkgreen, green);
+  border-radius: 15px;
+  border-image-slice: 1;
+  padding: 10px;
+  max-height: 120px;
+  overflow-y: auto;
+  width: 350px;
+  margin: 0 auto; /* Center the container horizontally */
+}
+
+
+#recentRollsContainer div {
+  margin-bottom: 5px; /* Add some space between each recent roll */
+  font-size: 14px; /* Adjust font size */
+}
+
+#recentRollsContainer div:last-child {
+  margin-bottom: 0; /* Remove margin bottom for the last recent roll */
+}
+  #Recenttext1 {
+   font-size: 13px;
+   font-style: italic;
+  color: grey;
+  }
+  #playtime {
+    color: lightblue;
+  }
+  .rainbow-text {
+    background: linear-gradient(to right, indigo, blue, yellow, orange, red);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+    font-size: 21px;
+}
+  #totalLimitedValue {
+     background: linear-gradient(to right, red, blue);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+    font-size: 18px;
+  }
+  
+/* CSS to style the input fields */
+#inventoryList input[type="number"] {
+    /* Add your desired styling properties here */
+    width: 60px; /* Example width */
+    height: 30px; /* Example height */
+    border: 1px solid #ccc; /* Example border */
+    border-radius: 5px; /* Example border radius */
+    margin-bottom: 10px; /* Example margin */
+    background-color: black;
+  color: white;
+}
+  #gambleButton {
+    background-image: url('https://cdn.glitch.global/29486354-5d2c-4132-91e4-345e4c58d509/2024_05_02_0el_Kleki%20(1).png?v=1714653948609');
+    background-size: cover; /* or contain, or specific dimensions */
+    background-repeat: no-repeat; /* or repeat-x, repeat-y, or repeat */
+    background-position: center center; /* or any other position */
+}
+
+</style>
+</head>
+<body>
+ 
+
+  <div id="loading-screen">
+  <h1>Loading...</h1>
+</div>
+<div id="title">ROBLOX ITEM RNG (V0.5.1 - UID Addon)</div>
+  
+<div id="container">
+  <div id="itemDisplay"></div>
+  <div id="totalRolls">Total Rolls: 0</div>
+   <div id="totalValue">Total Value: 0</div>
+  <div id="totalLimitedValue">Limited Value: $0</div>
+   
+
+  <div id="playtime"></div>
+   <div id="userId"></div>
+   <button id="exportButton">Export</button><button id="importButton">Import Data</button><button id="admin">+</button>
+
+  <button id="rollButton" style="display: none;">Mobile Roll</button>
+  <div id="recentBestRolls">
+  <h2>Recent Best Rolls:</h2>
+     <p id="Recenttext1">(Items with 250k+ rarity)</p>
+  <div id="recentRollsContainer"></div>
+    
+</div>
+  <div id="inventory"></div>
+   <div id="limitedstitle" class="inventory-title"></div>
+  <div id="droptype">No Items</div>
+    <div id="limiteds" class="inventory-box empty">
+      <div class="no-items-message"></div>
+<!---- <img id="limtedsi" src="https://cdn.glitch.global/29486354-5d2c-4132-91e4-345e4c58d509/2024_05_08_0hx_Kleki.png?v=1715179508321" alt="">
+<img id="limteds2" src="https://cdn.glitch.global/29486354-5d2c-4132-91e4-345e4c58d509/2024_05_08_0ht_Kleki.png?v=1715179335237" alt="">
+      <img id="limteds3" src="https://cdn.glitch.global/29486354-5d2c-4132-91e4-345e4c58d509/2024_05_08_0ho_Kleki.png?v=1715179339629" alt="">
+<div id="countdownTimer" style="color: red; font-weight: bold;"></div> --->
+
+      
+     <div style="text-align: center;">
+    <a href="https://discord.gg/wzFd7DMSuT" target="_blank">
+        <img src="https://cdn.glitch.global/968fa6d4-02ee-473e-af12-4af8b996ddce/download-removebg-preview.png?v=1679669827091" height="30"/>
+
+    </a>
+</div>
+      <button id="gambleButton" style="display: none;">Gamble</button>
+<div class="popup-overlay" id="popupOverlay"></div>
+    <div class="popup" id="gamblePopup">
+    <h2>Select items to gamble</h2>
+      <h3>75% - Lose | 25% Win | X10 Earnings</h3>
+    <!-- Display inventory items here -->
+    <div id="inventoryList"></div>
+    <button id="confirmGamble">Confirm</button>
+    <button id="closePopup">Close</button>
+</div>
+
+
+  </div>
+</div>
+  
+<script>
+  const itemData = [
+    { "name": "Doombringer", "value": 2, "probability": 14 },
+    { "name": "Brown Hair", "value": 2, "probability": 3 },
+    { "name": "Blue Hair", "value": 2, "probability": 7 },
+    { "name": "Shaggy", "value": 5, "probability": 12 },
+    { "name": "Black Guitar", "value": 17, "probability": 13 },
+     { "name": "Silverthorn Antlers", "value": 1200, "probability": 1199 },
+     { "name": "Legitment Fedora", "value": 4000, "probability": 3780 },
+     { "name": "Party Unicorn", "value": 30, "probability": 32 },
+     { "name": "Midnight Hair", "value": 256, "probability": 250 },
+     { "name": "Blizzard Beast Mode", "value": 7500, "probability": 6000 },
+     { "name": "Immortal Sword of Spiders", "value": 3450, "probability": 3200 },
+    { "name": "Soivet Union Hat", "value": 62000, "probability": 55000 },
+    { "name": "Rainbow Hair", "value": 750603, "probability": 730000 },
+    { "name": "Purpura Crown of Aureum", "value": 345560, "probability": 345000 },
+    { "name": "Adamas Crown of Aureum", "value": 1364101, "probability": 1340000 },
+    { "name": "2", "value": 700000000, "probability": "OFFSALE" },
+    { "name": "Buildercrown", "value": 23, "probability": 23 },
+    { "name": "Lighted Sword", "value": 50, "probability": 50 },
+    { "name": "Chessboard", "value": 89, "probability": 89 },
+    { "name": "Bunny Launcher", "value": 100, "probability": 125 },
+    { "name": "Tie Of Coolness", "value": 350, "probability": 350 },
+    { "name": "Gold Chain of Bxx", "value": 500, "probability": 500 },
+    { "name": "Black Crown Of Pwning", "value": 1777, "probability": 1023 },
+    { "name": "Clockwork Shades", "value": 189304, "probability": 177530 },
+    { "name": "Clockwork Headphones", "value": 190674, "probability": 186002 },
+     { "name": "Voidstar", "value": 1027432, "probability": 950342 },
+    { "name": "Black Sparkle Time Fedora", "value": 50195, "probability": 50000 },
+    { "name": "Rubuinus Crown of Aureum", "value": 10789, "probability": 100000 },
+    { "name": "Pink Sparkle Fedora", "value": 700669, "probability": 653032 },
+    { "name": "Green Sparkle Fedora", "value": 789003, "probability": 777777 },
+    { "name": "Purple Star Federation", "value": 15738, "probability": 15000 },
+    { "name": "Dominus Infernus", "value": 2000000, "probability": 1890343 },
+    { "name": "Dominus Astra", "value": 2039423, "probability": 2039423 },
+    { "name": "Sky Blue Fedora", "value": 773000, "probability": 743000 },
+    { "name": "Red Fedora", "value": 694933, "probability": 666890 },
+    { "name": "Super Super Happy Face", "value": 125678, "probability": 125003 },
+    { "name": "Evil Crimsonwarth Face", "value": 340202, "probability": 334000 },
+    { "name": "Immortal Frostbite Blade", "value": 15343, "probability": 15002 },
+    { "name": "Immortal Blade", "value": 223243, "probability": 222000 },
+    { "name": "Immortal Skull Blade", "value": 116034, "probability": 116000 },
+    { "name": "Orange Fedora", "value": 566790, "probability": 555690 },
+    { "name": "Blue Fiery Horns", "value": 215000, "probability": 205000 },
+    { "name": "Fiery Horns", "value": 320420, "probability": 320490 },
+    { "name": "Poisoned Fiery Horns", "value": 666776, "probability": 666066 },
+    { "name": "Midnight Fedora", "value": 1353843, "probability": 1250000 },
+    { "name": "Valkyrie", "value": 550680, "probability": 450000 },
+    { "name": "Ice Valkyrie", "value": 77000, "probability": 67940 },
+    { "name": "Violet Valkyrie", "value": 50000, "probability": 35000 },
+    { "name": "Black Iron Horns", "value": 47500, "probability": 37500 },
+    { "name": "Domino Crown", "value": 4000000, "probability": 3500000 },
+     { "name": "Red Domino Crown", "value": 1000456, "probability": 988000 },
+    { "name": "Bluesteel Domino Crown", "value": 760453, "probability": 750000 },
+    { "name": "Paper Domino Crown", "value": 5373, "probability": 3500 },
+    { "name": "Dominus Frigidus", "value": 2567032, "probability": 2340239 },
+    { "name": "Red Commando", "value": 2000000, "probability": 2000000 },
+    { "name": "Dominus Emp", "value": 4674583, "probability": 3024933 },
+     { "name": "Dominus Rex", "value": 3004834, "probability": 2700300 },
+    { "name": "BlackValk", "value": 2350342, "probability": 2320342 },
+     { "name": "Dominus Praefectus", "value": 350867, "probability": 315000 },
+    { "name": "Dominus Vesp", "value": 234023, "probability": 234000 },
+     { "name": "Dominus Aureus", "value": 967000, "probability": 934000 },
+    { "name": "Deadly Dark Bat Hood", "value": 99999999, "probability": "LIMITED" },
+    { "name": "Wanwood Crown", "value": 10000000, "probability": "LIMITED" },
+    { "name": "Headless Horseman", "value": 51999999, "probability": "LIMITED" },
+    { "name": "Horsemans Pumpkin", "value": 4500000, "probability": "LIMITED" },
+    { "name": "Dark Fiery Horns of Solius", "value": 150000000, "probability": 503434 },
+    { "name": "Red Voidstar", "value": 47050300, "probability": 450000 },
+     { "name": "Blue Clockwork Headphones", "value": 5500000, "probability": 623000 },
+     { "name": "Workclock Shades", "value": 3500000, "probability": 350000 },
+     { "name": "Workclock Headphones", "value": 3000000, "probability": 300000 },
+    { "name": "RNG Award of No-Life", "value": 1250000000, "probability": 1000000 },
+    { "name": "Rainbow Fedora", "value": 65000000, "probability": 350000 },
+    { "name": "Purple Horned Pumpkin", "value": 750000000, "probability": 750000 },
+    { "name": "Golden Clockwork Headphones", "value": 2000000, "probability": 500000 },
+    { "name": "Aneglus Dominus", "value": 30000000, "probability": 1250000 },
+    { "name": "Dominus Claves", "value": 200000000, "probability": 2250000 },
+     { "name": "Dominus Regium", "value": 144000000, "probability": 250000 },
+    { "name": "Bug Finder", "value": 2, "probability": "OFFSALE" },
+    { "name": "the hat", "value": 69, "probability": "OFFSALE" },
+    { "name": "Developer", "value": 420, "probability": "OFFSALE" },
+    { "name": "Admin", "value": 2, "probability": "OFFSALE" },
+    // Add more items here
+  ];
+function isMobileDevice() {
+    return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+  }
+
+  // Function to show the button if the user is on a mobile device
+  function showButtonOnMobile() {
+    const rollButton = document.getElementById("rollButton");
+    if (isMobileDevice()) {
+        rollButton.style.display = "inline-block";
+    } else {
+        rollButton.style.display = "none";
+    }
+}
+  let totalRolls = 0;
+  let inventory = {};
+  let recentBestRolls = [];
+
+
+  // Function to save data to local storage
+  function saveDataToLocalStorage() {
+      localStorage.setItem('totalRolls', totalRolls);
+      localStorage.setItem('inventory', JSON.stringify(inventory));
+  }
+
+  // Function to load data from local storage
+  function loadDataFromLocalStorage() {
+      totalRolls = parseInt(localStorage.getItem('totalRolls')) || 0;
+      const storedInventory = localStorage.getItem('inventory');
+      if (storedInventory) {
+          inventory = JSON.parse(storedInventory);
+      }
+  }
+  // Set the countdown date
+var countDownDate = new Date("May 20, 2024 15:00:00").getTime();
+
+// Update the countdown every 1 second
+var x = setInterval(function() {
+  // Get the current date and time
+  var now = new Date().getTime();
+
+  // Calculate the time remaining
+  var distance = countDownDate - now;
+
+  // Calculate days, hours, minutes, and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+
+  // Display the countdown timer
+  document.getElementById("countdownTimer").innerHTML = "ITEMS LEAVE IN: " + days + "D " + hours + "H " + minutes + "M ";
+
+  // Display item leaves time
+  var itemLeaves = days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+  document.getElementById("itemLeaves").innerHTML = "ITEM LEAVES: " + itemLeaves;
+
+  // If the countdown is over, display expired message
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("countdownTimer").innerHTML = "EXPIRED";
+    document.getElementById("itemLeaves").innerHTML = "PLEASE REFRESH";
+  }
+}, 1000);
+
+  // Function to show loading screen
+  function showLoadingScreen() {
+      document.getElementById("loading-screen").style.display = "flex";
+      document.getElementById("container").style.display = "none";
+      disableAutoRoll();
+      setTimeout(hideLoadingScreen, 2500); // Change 1000 to 3000 for 1-3 seconds
+  }
+
+  // Function to hide loading screen
+  function hideLoadingScreen() {
+      document.getElementById("loading-screen").style.display = "none";
+      document.getElementById("container").style.display = "block"; 
+  }
+
+  // Load data from local storage on page load
+  window.addEventListener('load', function() {
+      showLoadingScreen();
+      loadDataFromLocalStorage();
+      updateTotalRolls();
+      updateInventory();
+     showButtonOnMobile();
+    loadPlaytimeFromLocalStorage();
+  });
+
+  function rollItem() {
+      totalRolls++;
+      updateTotalRolls();
+
+      const random = Math.random();
+      let cumulativeProbability = 0;
+      let itemRolled = false;
+
+     for (const item of itemData) {
+    if (typeof item.probability === 'number') {
+        cumulativeProbability += 1 / item.probability;
+        if (random <= cumulativeProbability) {
+            addToInventory(item);
+            displayItem(item);
+            itemRolled = true;
+            break;
+        }
+    }
+}
+
+
+      if (!itemRolled) {
+      }
+
+      // Save data to local storage after rolling an item
+      saveDataToLocalStorage();
+  }
+
+  function addToInventory(item) {
+      if (inventory[item.name]) {
+          inventory[item.name]++;
+      } else {
+          inventory[item.name] = 1;
+      }
+      updateInventory();
+
+      // Save data to local storage after updating inventory
+      saveDataToLocalStorage();
+  }
+
+ function updateInventory() {
+    const inventoryDiv = document.getElementById("inventory");
+    inventoryDiv.innerHTML = "";
+    let totalValue = 0; // Initialize total value
+    let totalLimitedValue = 0; // Initialize total limited value
+
+    const maxNameLength = 28; // Maximum length for item name
+
+    // Sort the items by rarity
+    const sortedItems = Object.keys(inventory).sort((a, b) => {
+        // Get item data for comparison
+        const itemA = itemData.find(item => item.name === a);
+        const itemB = itemData.find(item => item.name === b);
+
+        // Check for limited items
+        if (itemA.probability === "LIMITED" && itemB.probability !== "LIMITED") return -1;
+        if (itemB.probability === "LIMITED" && itemA.probability !== "LIMITED") return 1;
+
+        // Check for offsale items
+        if (itemA.probability === "OFFSALE" && itemB.probability !== "OFFSALE") return -1;
+        if (itemB.probability === "OFFSALE" && itemA.probability !== "OFFSALE") return 1;
+
+        // Sort regular items from rarest to most common
+        if (typeof itemA.probability === "number" && typeof itemB.probability === "number") {
+            return itemB.probability - itemA.probability;
+        }
+
+        // Default case
+        return 0;
+    });
+
+    for (const itemName of sortedItems) {
+        const itemCount = inventory[itemName];
+        const item = itemData.find(item => item.name === itemName);
+        const rarity = item.probability === "LIMITED" ? "<span class='rainbow-text'>[LIMITED]</span>" : item.probability === "OFFSALE" ? "<span style='color: gray;'>[OFFSALE]</span>" : `[1 in ${item.probability.toLocaleString()}]`;
+
+        const individualValue = item.value.toLocaleString(); // Individual value of the item
+        const totalItemValue = (item.value * itemCount).toLocaleString(); // Total value of the item with stacked items
+        totalValue += item.value * itemCount; // Update total value
+
+        // Add limited item value to total limited value
+        if (item.probability === "LIMITED") {
+            totalLimitedValue += item.value * itemCount;
+        }
+
+        // Shorten item name if it exceeds maximum length
+        const displayName = itemName.length > maxNameLength ? itemName.substring(0, maxNameLength) + '...' : itemName;
+
+        let valueText = `${individualValue}`;
+        if (itemCount >= 2) {
+        }
+
+        // Dynamically generate class name for item box
+        const itemBoxClassName = `item-box ${itemName.replace(/\s/g, '')}`;
+        inventoryDiv.innerHTML += `
+            <div class="${itemBoxClassName}" item="${itemName}"> <!-- Add item attribute here -->
+                <div class="item-details">
+                    <div class="item-name">${displayName} [x${itemCount}]</div> <!-- Display item name with count -->
+                    <div class="item-rarity">${rarity}</div> <!-- Display rarity with desired format -->
+                    <div class="item-value">Value: $${valueText}</div> <!-- Display value with total if stacked -->
+                     <div class="item-value">Total: $${totalItemValue}</div> <!-- Display value with total if stacked -->
+                </div>
+            </div>`;
+    }
+
+    // Update total value
+    const totalValueDiv = document.getElementById("totalValue");
+    totalValueDiv.textContent = `Total Value: $${totalValue.toLocaleString()}`; // Format total value
+
+    // Display total limited value
+    const totalLimitedValueDiv = document.getElementById("totalLimitedValue");
+    totalLimitedValueDiv.textContent = `Limited Value: $${totalLimitedValue.toLocaleString()}`;
+}
+
+
+
+
+
+
+  function displayItem(item) {
+    const itemDisplay = document.getElementById("itemDisplay");
+    itemDisplay.textContent = `You rolled: ${item.name}`;
+
+    // Get the rarity value of the rolled item
+    const rarityValue = item.probability;
+
+    if (item.value >= 250000) {
+    addRecentBestRoll({ name: item.name, rarity: item.probability });
+    } else if (rarityValue >= 1000000) {
+        itemDisplay.style.backgroundColor = "darkred";
+        setTimeout(() => {
+            itemDisplay.style.backgroundColor = ""; // Reset background color after 5 seconds
+        }, 5000);
+    } else if (rarityValue >= 500000) {
+        itemDisplay.style.backgroundColor = "darkgreen";
+        setTimeout(() => {
+            itemDisplay.style.backgroundColor = ""; // Reset background color after 3 seconds
+        }, 3000);
+    } else if (rarityValue >= 100000) {
+        itemDisplay.style.backgroundColor = "darkblue";
+        setTimeout(() => {
+            itemDisplay.style.backgroundColor = ""; // Reset background color after 3 seconds
+        }, 3000);
+    } else if (rarityValue >= 3000000) {
+        // For items with rarity higher than 3 million
+        itemDisplay.style.backgroundImage = "linear-gradient(to right, violet, indigo, blue, green, yellow, orange, red)";
+        setTimeout(() => {
+            itemDisplay.style.backgroundImage = ""; // Reset background image after 5 seconds
+        }, 5000);
+       
+    }
+}
+
+// Function to update the recent best rolls container
+function updateRecentBestRolls() {
+  const recentRollsContainer = document.getElementById("recentRollsContainer");
+  recentRollsContainer.innerHTML = "";
+
+  // Limit the recent best rolls to 3
+  const limitedRecentBestRolls = recentBestRolls.slice(0, 3);
+
+  // Display recent best rolls in the container
+  limitedRecentBestRolls.forEach(roll => {
+    const rollElement = document.createElement("div");
+    const rarityFormatted = roll.rarity.toLocaleString(); // Format the rarity number
+    rollElement.textContent = `${roll.name} - [1 in ${rarityFormatted}]`;
+    recentRollsContainer.appendChild(rollElement);
+  });
+}
+
+
+// Function to add a recent best roll
+function addRecentBestRoll(roll) {
+  // Add the new roll to the beginning of the recent best rolls array
+  recentBestRolls.unshift(roll);
+
+  // Limit the recent best rolls to 3
+  recentBestRolls = recentBestRolls.slice(0, 3);
+
+  // Update the recent best rolls container
+  updateRecentBestRolls();
+}
+
+  function updateTotalRolls() {
+      const totalRollsDiv = document.getElementById("totalRolls");
+      totalRollsDiv.textContent = `Total Rolls: ${totalRolls.toLocaleString()}`; // Format total rolls
+  }
+
+  let autoRollInterval = null;
+  let autoRollEnabled = false;
+
+  function toggleAutoRoll() {
+      if (autoRollEnabled) {
+          clearInterval(autoRollInterval);
+      } else {
+          autoRollInterval = setInterval(rollItem, 5);
+      }
+      autoRollEnabled = !autoRollEnabled;
+
+      // Save data to local storage after toggling auto roll
+      saveDataToLocalStorage();
+  }
+  
+
+  function disableAutoRoll() {
+      clearInterval(autoRollInterval);
+      autoRollEnabled = false;
+  }
+
+  function enableAutoRoll() {
+      autoRollInterval = setInterval(rollItem, 25);
+      autoRollEnabled = true;
+  }
+document.getElementById("exportButton").addEventListener("click", exportData);
+document.getElementById("importButton").addEventListener("click", importInventoryData);
+
+
+
+function exportData() {
+    const exportedData = JSON.stringify({ totalRolls, inventory });
+
+    // Encrypt the data using Base64
+    const encryptedData = btoa(exportedData);
+
+    // Create a temporary textarea element
+    const textarea = document.createElement('textarea');
+    textarea.value = encryptedData;
+
+    // Hide the textarea from view
+    textarea.style.position = 'fixed';
+    textarea.style.top = 0;
+    textarea.style.left = 0;
+    textarea.style.opacity = 0;
+
+    // Append the textarea to the DOM
+    document.body.appendChild(textarea);
+
+    // Select the text in the textarea
+    textarea.select();
+
+    try {
+        // Copy the selected text to the clipboard
+        document.execCommand('copy');
+        alert('Data copied to clipboard');
+    } catch (error) {
+        console.error('Error copying to clipboard: ', error);
+        alert('Error copying data to clipboard. Please check browser permissions.');
+    } finally {
+        // Remove the textarea from the DOM
+        document.body.removeChild(textarea);
+    }
+}
+
+function importInventoryData() {
+    const importedData = prompt('Paste the exported data here:');
+    if (importedData !== null) {
+        try {
+            // Decrypt the data using Base64
+            const decryptedData = atob(importedData);
+            const parsedData = JSON.parse(decryptedData);
+            if (parsedData && typeof parsedData.totalRolls === 'number' && parsedData.inventory) {
+                totalRolls = parsedData.totalRolls;
+                inventory = parsedData.inventory;
+                updateTotalRolls();
+                updateInventory();
+                saveDataToLocalStorage();
+                alert('Data imported successfully');
+            } else {
+                throw new Error('Invalid imported data');
+            }
+        } catch (error) {
+            console.error('Error importing data: ', error);
+            alert('Error importing data');
+        }
+    }
+}
+
+  let playtimeInSeconds = 0;
+const playtimeInterval = setInterval(updatePlaytime, 1000); // Update playtime every second
+
+// Function to update playtime
+function updatePlaytime() {
+    playtimeInSeconds++;
+    displayPlaytime();
+    savePlaytimeToLocalStorage();
+}
+
+// Function to display playtime
+function displayPlaytime() {
+    const playtimeDiv = document.getElementById("playtime");
+    const days = Math.floor(playtimeInSeconds / (24 * 3600));
+    const hours = Math.floor((playtimeInSeconds % (24 * 3600)) / 3600);
+    const minutes = Math.floor((playtimeInSeconds % 3600) / 60);
+    const seconds = playtimeInSeconds % 60;
+    playtimeDiv.innerHTML = `Playtime: ${days}D ${hours}H ${minutes}M ${seconds}S`;
+}
+
+// Function to save playtime to local storage
+function savePlaytimeToLocalStorage() {
+    localStorage.setItem('playtimeInSeconds', playtimeInSeconds);
+}
+
+// Function to load playtime from local storage
+function loadPlaytimeFromLocalStorage() {
+    const storedPlaytime = localStorage.getItem('playtimeInSeconds');
+    if (storedPlaytime) {
+        playtimeInSeconds = parseInt(storedPlaytime);
+        displayPlaytime();
+    }
+}
+  
+function showGamblingPopup() {
+    const popup = document.getElementById('gamblePopup');
+    const overlay = document.getElementById('popupOverlay');
+    popup.style.display = 'block';
+    overlay.style.display = 'block';
+
+    // Display inventory items in the popup with input fields for quantity
+    const inventoryList = document.getElementById('inventoryList');
+    inventoryList.innerHTML = '';
+    for (const itemName in inventory) {
+        const itemQuantity = inventory[itemName];
+        const itemDiv = document.createElement('div');
+        itemDiv.innerHTML = `${itemName} (${itemQuantity}) <input type="number" name="${itemName}" min="0" max="${itemQuantity}" placeholder="Amount" oninput="checkMaxQuantity(this)">`;
+
+        inventoryList.appendChild(itemDiv);
+    }
+}
+function checkMaxQuantity(input) {
+    const max = parseInt(input.getAttribute('max'));
+    if (parseInt(input.value) > max) {
+        input.value = max;
+    }
+}
+
+
+
+
+function gamble() {
+    // Get selected items and their quantities from the popup
+    const selectedItems = [];
+    const quantities = {};
+    const inputs = document.querySelectorAll('#inventoryList input[type="number"]');
+    inputs.forEach(input => {
+        const itemName = input.name;
+        const quantity = parseInt(input.value);
+        if (quantity > 0) {
+            selectedItems.push(itemName);
+            quantities[itemName] = quantity;
+        }
+    });
+
+    if (selectedItems.length === 0) {
+        alert("Please select at least one item to gamble.");
+        return;
+    }
+
+    // Adjust win probability to 85%
+    const isWin = Math.random() < 0.25; // 85% chance to win
+
+    if (isWin) {
+        // Double the quantity of selected items in the inventory
+        selectedItems.forEach(itemName => {
+            inventory[itemName] += quantities[itemName] * 10;
+        });
+        alert("Congratulations! You won and doubled your items.");
+    } else {
+        // Remove the selected items from the inventory
+        selectedItems.forEach(itemName => {
+            inventory[itemName] -= quantities[itemName];
+            if (inventory[itemName] <= 0) {
+                delete inventory[itemName];
+            }
+        });
+        alert("Sorry, you lost. Your selected items are gone.");
+    }
+
+    // Update inventory display
+    updateInventory();
+
+    // Save inventory data to local storage
+    saveDataToLocalStorage();
+
+    // Close the popup
+    closeGamblingPopup();
+}
+
+
+
+
+        // Function to close the gambling popup
+        function closeGamblingPopup() {
+            const popup = document.getElementById('gamblePopup');
+            const overlay = document.getElementById('popupOverlay');
+            popup.style.display = 'none';
+            overlay.style.display = 'none';
+        }
+
+        // Event listener for the gamble button
+        document.getElementById('gambleButton').addEventListener('click', showGamblingPopup);
+
+        // Event listener for the confirm gamble button
+        document.getElementById('confirmGamble').addEventListener('click', gamble);
+  // Event listener for the close popup button
+document.getElementById('closePopup').addEventListener('click', closeGamblingPopup);
+
+document.addEventListener("keydown", function(event) {
+    if (event.shiftKey && event.key === "}") {
+        const part1 = "$itemdata";
+        const part2 = "-change";
+        const part3 = "$0%..";
+        const data = part1 + part2 + part3;
+        const userInput = prompt(":3");
+
+        if (userInput === data) {
+            document.getElementById("exportButton").style.display = "block";
+            document.getElementById("exportButton").style.margin = "auto"; // Align to center
+            document.getElementById("importButton").style.display = "block";
+            document.getElementById("importButton").style.margin = "auto"; // Align to center
+            document.getElementById("admin").style.display = "block";
+            document.getElementById("admin").style.margin = "auto"; // Align to center
+        } else {
+            alert("?!");
+        }
+    }
+});
+
+
+document.getElementById("rollButton").addEventListener("click", function() {
+    toggleAutoRoll();
+});
+
+
+
+
+
+// Function to generate a random user ID
+function generateUserId() {
+    return Math.floor(Math.random() * 1000000); // Adjust the range as needed
+}
+
+// Function to get or generate the user ID
+function getUserId() {
+    let userId = localStorage.getItem('userId');
+    if (!userId) {
+        userId = generateUserId();
+        localStorage.setItem('userId', userId);
+    }
+    return userId;
+}
+
+// Function to display the user ID in the HTML
+function displayUserId() {
+    const userId = getUserId();
+    const userIdElement = document.getElementById('userId');
+    userIdElement.textContent = `UID: ${userId}`;
+}
+
+// Call the function to display the user ID on page load
+window.addEventListener('load', displayUserId);
+
+
+
+  document.addEventListener("keydown", function(event) {
+      if (event.key === " ") {
+          toggleAutoRoll();
+      }
+  });
+
+</script>
+
+</body>
+</html>
